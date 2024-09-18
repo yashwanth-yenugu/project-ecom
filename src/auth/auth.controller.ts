@@ -1,17 +1,8 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from './auth.guard';
+import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { SkipAuth } from './decorators/skipAuth';
+import { skipAuth } from './decorators/skipAuth';
+import { LocalAuthGuard } from './local-auth.guard';
 import { SignInDto } from './models/signIn.dto';
 
 @ApiTags('auth')
@@ -19,17 +10,11 @@ import { SignInDto } from './models/signIn.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @SkipAuth()
-  @HttpCode(HttpStatus.OK)
-  @Post('login')
-  signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
-  }
-
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  @skipAuth()
+  @UseGuards(LocalAuthGuard)
+  @ApiBody({ type: SignInDto })
+  @Post('auth/login')
+  async login(@Request() req) {
+    return this.authService.login(req.user);
   }
 }
