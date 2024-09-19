@@ -1,4 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
@@ -24,6 +25,10 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  await app.listen(3000);
+  const configService = app.get(ConfigService);
+  const port = configService.get('PORT');
+
+  await app.listen(port);
+  console.log(`App running on ${await app.getUrl()}`);
 }
 bootstrap();
