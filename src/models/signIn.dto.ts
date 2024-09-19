@@ -2,10 +2,10 @@ import { IsNotEmpty } from 'class-validator';
 
 export class SignInDto {
   /**
-   * @example 'yash'
+   * @example 'yash@mail.in'
    */
   @IsNotEmpty()
-  username: string;
+  email: string;
 
   /**
    * @example 'admin
