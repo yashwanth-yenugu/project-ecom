@@ -12,7 +12,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .addBearerAuth()
-    .setTitle('Project Play')
+    .setTitle('Project Ecom')
     .setDescription('Project for authentication')
     .setVersion('1.0')
     .build();
