@@ -6,6 +6,7 @@ import {
 import { Prisma } from '@prisma/client';
 import { SignUpDto } from 'src/models/signUp.dto';
 import { PrismaService } from 'src/prisma.service';
+import { hashPassword } from 'src/utils/password';
 
 // This should be a real class/interface representing a user entity
 export type User = any;
@@ -31,19 +32,21 @@ export class UsersService {
 
   async signUp(signUpDto: SignUpDto) {
     try {
-      const User = await this.prisma.user.create({
+      const hashedPassword = hashPassword(signUpDto.password);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...user } = await this.prisma.user.create({
         data: {
           username: signUpDto.username,
-          password: signUpDto.password,
+          password: hashedPassword,
           email: signUpDto.email,
         },
       });
-      return User;
+      return user;
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
           throw new ConflictException(
-            'There is a unique constraint violation, a new user cannot be created with this email',
+            'This email address is already associated with an account. Would you like to log in instead?',
           );
         }
       }
