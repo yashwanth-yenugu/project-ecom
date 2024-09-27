@@ -6,5 +6,5 @@ export class SignUpDto extends SignInDto {
    * @example 'yash'
    */
   @IsNotEmpty()
-  username: string;
+  name: string;
 }
