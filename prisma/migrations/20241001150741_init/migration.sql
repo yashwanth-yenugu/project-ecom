@@ -3,10 +3,10 @@ CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'SHIPPED', 'DELIVERED', 'CANCELED'
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" STRING NOT NULL,
-    "email" STRING NOT NULL,
-    "password" STRING NOT NULL,
-    "name" STRING,
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "name" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -15,11 +15,11 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Product" (
-    "id" STRING NOT NULL,
-    "name" STRING NOT NULL,
-    "description" STRING NOT NULL,
-    "price" FLOAT8 NOT NULL,
-    "stock" INT4 NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
+    "stock" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -29,8 +29,8 @@ CREATE TABLE "Product" (
 -- CreateTable
 CREATE TABLE "Order" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "userId" STRING NOT NULL,
-    "total" FLOAT8 NOT NULL,
+    "userId" TEXT NOT NULL,
+    "total" DOUBLE PRECISION NOT NULL,
     "status" "OrderStatus" NOT NULL DEFAULT 'PENDING',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -40,22 +40,22 @@ CREATE TABLE "Order" (
 
 -- CreateTable
 CREATE TABLE "OrderItem" (
-    "id" STRING NOT NULL,
+    "id" TEXT NOT NULL,
     "orderId" UUID NOT NULL,
-    "productId" STRING NOT NULL,
-    "quantity" INT4 NOT NULL,
-    "price" FLOAT8 NOT NULL,
+    "productId" TEXT NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
 
     CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Review" (
-    "id" STRING NOT NULL,
-    "rating" INT4 NOT NULL,
-    "comment" STRING,
-    "productId" STRING NOT NULL,
-    "userId" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "rating" INTEGER NOT NULL,
+    "comment" TEXT,
+    "productId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "Review_pkey" PRIMARY KEY ("id")
 );
