@@ -3,12 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "cockroachdb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-enum crdb_internal_region {
-  aws_ap_south_1 @map("aws-ap-south-1")
 }
 
 model User {
