@@ -2,7 +2,8 @@ import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { skipAuth } from './auth/decorators/skipAuth';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { RefreshAuthGuard } from './auth/guards/refresh-auth.guard';
 
 @Controller()
 export class AppController {
@@ -11,7 +12,7 @@ export class AppController {
   @skipAuth()
   @Get()
   getHello() {
-    return this.appService.getHello();
+    return this.appService.getAllUsers();
   }
 
   @UseGuards(JwtAuthGuard)
@@ -25,5 +26,12 @@ export class AppController {
   @Get('allUsers')
   getAllUsers() {
     return this.appService.getAllUsers();
+  }
+
+  @UseGuards(RefreshAuthGuard)
+  @ApiBearerAuth()
+  @Get('refreshProfile')
+  gettest(@Request() req) {
+    return req.user;
   }
 }
