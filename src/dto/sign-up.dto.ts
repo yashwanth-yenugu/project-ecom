@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { SignInDto } from './signIn.dto';
+import { SignInDto } from './sign-in.dto';
 
 export class SignUpDto extends SignInDto {
   /**

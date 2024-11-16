@@ -3,6 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { PrismaService } from 'src/prisma.service';
+import { AwsModule } from '../aws/aws.module';
 import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -21,6 +24,13 @@ import { LocalStrategy } from './local.strategy';
         signOptions: { expiresIn: configService.get<string>('JWT_EXPIRES_IN') },
       }),
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 30000,
+        limit: 1,
+      },
+    ]),
+    AwsModule,
   ],
   controllers: [AuthController],
   providers: [
@@ -31,6 +41,7 @@ import { LocalStrategy } from './local.strategy';
     AuthService,
     LocalStrategy,
     JwtStrategy,
+    PrismaService,
   ],
   exports: [AuthService],
 })
