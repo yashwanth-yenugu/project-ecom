@@ -10,7 +10,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'log'],
   });
-  app.enableCors();
+
+  const configService = app.get(ConfigService);
+  const origin = configService.get('ORIGIN');
+  app.enableCors({
+    origin,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
   app.use(helmet());
 
   const config = new DocumentBuilder()
@@ -29,10 +36,10 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  const configService = app.get(ConfigService);
+
   const port = configService.get('PORT');
 
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   const logger = new Logger('Bootstrap');
   logger.log(`This application is runnning on: ${await app.getUrl()}`);
 }
