@@ -12,9 +12,9 @@ async function bootstrap() {
   });
 
   const configService = app.get(ConfigService);
-  const origin = configService.get('ORIGIN');
+
   app.enableCors({
-    origin,
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
