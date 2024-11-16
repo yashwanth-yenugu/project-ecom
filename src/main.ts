@@ -12,12 +12,24 @@ async function bootstrap() {
   });
 
   const configService = app.get(ConfigService);
+  const origin = configService.get('PORT');
 
   app.enableCors({
-    origin: '*',
+    origin: ['http://18.61.92.138:5555', origin],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
   });
+
+  // Add security headers
+  app.use((req, res, next) => {
+    res.header('Cross-Origin-Opener-Policy', 'same-origin');
+    res.header('Cross-Origin-Embedder-Policy', 'require-corp');
+    res.header('Access-Control-Allow-Origin', origin);
+    next();
+  });
+
   app.use(helmet());
 
   const config = new DocumentBuilder()
