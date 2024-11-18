@@ -2,31 +2,18 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as fs from 'fs';
 import helmet from 'helmet';
-import * as path from 'path';
 import { AppModule } from './app.module';
 import metadata from './metadata';
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: fs.readFileSync(path.join(__dirname, '../ssl/private-key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, '../ssl/public-cert.pem')),
-  };
-
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'log'],
-    httpsOptions,
   });
 
   const configService = app.get(ConfigService);
 
-  app.enableCors({
-    origin: true,
-    methods: '*',
-    allowedHeaders: '*',
-    credentials: true,
-  });
+  app.enableCors();
 
   app.use(helmet());
 

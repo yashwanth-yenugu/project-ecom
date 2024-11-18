@@ -29,6 +29,9 @@ export class PrismaService
     this.$on('error', (event) => {
       this.logger.verbose(event.target);
     });
+
     await this.$connect();
+
+    this.logger.log('DB connection success!');
   }
 }
