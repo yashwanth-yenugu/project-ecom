@@ -15,9 +15,10 @@ enum Environment {
   Provision = 'provision',
 }
 
-class EnvironmentVariables {
+export class EnvironmentVariables {
+  @IsOptional()
   @IsEnum(Environment)
-  NODE_ENV: Environment;
+  NODE_ENV: Environment = Environment.Production;
 
   @IsOptional()
   @Min(0)
@@ -38,6 +39,15 @@ class EnvironmentVariables {
 
   @IsString()
   REFRESH_EXPIRES_IN: string = '60d';
+  
+  @IsString()
+  AWS_REGION: string;
+
+  @IsString()
+  AWS_ACCESS_KEY_ID: string;
+
+  @IsString()
+  AWS_SECRET_ACCESS_KEY: string;
 }
 
 export function validate(config: Record<string, unknown>) {
