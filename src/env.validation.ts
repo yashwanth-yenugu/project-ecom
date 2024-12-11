@@ -35,6 +35,12 @@ export class EnvironmentVariables {
   JWT_EXPIRES_IN: string = '60d';
 
   @IsString()
+  REFRESH_SECRET: string;
+
+  @IsString()
+  REFRESH_EXPIRES_IN: string = '60d';
+  
+  @IsString()
   AWS_REGION: string;
 
   @IsString()

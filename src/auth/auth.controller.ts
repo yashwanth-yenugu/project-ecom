@@ -7,7 +7,8 @@ import { VerifyOtpDto } from 'src/dto/verify-otp.dto';
 import { SignInDto } from '../dto/sign-in.dto';
 import { AuthService } from './auth.service';
 import { skipAuth } from './decorators/skipAuth';
-import { LocalAuthGuard } from './local-auth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { RefreshAuthGuard } from './guards/refresh-auth.guard';
 
 @ApiTags('auth')
 @skipAuth()
@@ -41,5 +42,12 @@ export class AuthController {
   @Post('delete-expired-otps')
   async deleteExpiredOTPs() {
     return this.authService.cleanupExpiredOTPs();
+  }
+
+  
+  @UseGuards(RefreshAuthGuard)  
+  @Post('refresh')
+  async refresh(@Request() req: Express.Request) {
+    return this.authService.refresh(req);
   }
 }
