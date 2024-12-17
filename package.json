@@ -18,6 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "prismadev": "prisma migrate dev",
     "prisma:migrate": "prisma migrate",
     "prisma:generate": "prisma generate",
     "prisma:db-pull": "prisma db pull",

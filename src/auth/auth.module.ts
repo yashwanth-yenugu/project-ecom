@@ -9,9 +9,9 @@ import { AwsModule } from '../aws/aws.module';
 import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './jwt-auth.guard';
-import { JwtStrategy } from './jwt.strategy';
-import { LocalStrategy } from './local.strategy';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtStrategy } from './stategies/jwt.strategy';
+import { LocalStrategy } from './stategies/local.strategy';
 import { RefreshStrategy } from './stategies/refresh.stategy';
 
 @Module({
