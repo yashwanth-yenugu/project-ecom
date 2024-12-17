@@ -40,15 +40,12 @@ export class EnvironmentVariables {
   @IsString()
   REFRESH_EXPIRES_IN: string = '60d';
   
-  @IsOptional()
   @IsString()
   AWS_REGION: string;
 
-  @IsOptional()
   @IsString()
   AWS_ACCESS_KEY_ID: string;
 
-  @IsOptional()
   @IsString()
   AWS_SECRET_ACCESS_KEY: string;
 }
