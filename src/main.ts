@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
+import { ResponseTimeInterceptor } from './interceptors/response-time.interceptor';
 import metadata from './metadata';
 import { PrismaService } from './prisma.service';
 
@@ -18,6 +19,9 @@ async function bootstrap() {
   app.enableCors();
 
   app.use(helmet());
+
+  // Add global response time interceptor
+  app.useGlobalInterceptors(new ResponseTimeInterceptor());
 
   const config = new DocumentBuilder()
     .addBearerAuth()
