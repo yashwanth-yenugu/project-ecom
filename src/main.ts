@@ -2,6 +2,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import compression from 'compression';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { ResponseTimeInterceptor } from './interceptors/response-time.interceptor';
@@ -16,8 +17,10 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const prismaService = app.get(PrismaService);
 
-  app.enableCors();
+  // Enable compression
+  app.use(compression());
 
+  app.enableCors();
   app.use(helmet());
 
   // Add global response time interceptor
