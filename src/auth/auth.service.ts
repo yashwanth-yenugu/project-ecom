@@ -35,9 +35,12 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const tokens = await this.getTokens(user.userId, user.email);    
-    await this.usersService.updateRefreshTokens(user.email, tokens.refresh_token);
-    return tokens
+    const tokens = await this.getTokens(user.userId, user.email);
+    await this.usersService.updateRefreshTokens(
+      user.email,
+      tokens.refresh_token,
+    );
+    return tokens;
   }
 
   async signUp(user: SignUpDto) {
@@ -69,16 +72,22 @@ export class AuthService {
 
   async refresh(req: any) {
     const refreshToken = req
-    ?.get('authorization')
-    ?.replace('Bearer', '')
-    .trim()
-    const emailId = this.jwtService.decode(refreshToken).email
+      ?.get('authorization')
+      ?.replace('Bearer', '')
+      .trim();
+    const emailId = this.jwtService.decode(refreshToken).email;
     const user = await this.usersService.findOne(emailId);
-    const isValidToken = user.refreshTokens.some((token) => token === refreshToken);
-    if(isValidToken) {
+    const isValidToken = user.refreshTokens.some(
+      (token: string) => token === refreshToken,
+    );
+    if (isValidToken) {
       const tokens = await this.getTokens(req.user.userId, req.user.email);
-      await this.usersService.updateRefreshTokens(req.user.email, tokens.refresh_token, refreshToken);
-      return tokens
+      await this.usersService.updateRefreshTokens(
+        req.user.email,
+        tokens.refresh_token,
+        refreshToken,
+      );
+      return tokens;
     } else {
       throw new UnauthorizedException();
     }

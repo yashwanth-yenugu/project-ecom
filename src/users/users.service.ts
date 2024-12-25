@@ -14,8 +14,10 @@ export type User = any;
 
 @Injectable()
 export class UsersService {
-  
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+  ) {}
 
   async findOne(email: string): Promise<User | undefined> {
     try {
@@ -56,24 +58,28 @@ export class UsersService {
     }
   }
 
-  async updateRefreshTokens(emailId: string, refreshToken: string, oldToken?: string): Promise<void> {
+  async updateRefreshTokens(
+    emailId: string,
+    refreshToken: string,
+    oldToken?: string,
+  ): Promise<void> {
     const user = await this.findOne(emailId);
     const refreshTokens = user.refreshTokens.filter((token) => {
       const decodedToken = this.jwtService.decode(token);
-      
+
       // Check if the token has expired
       if (decodedToken.exp * 1000 > Date.now() || token !== oldToken) {
         return true; // Token is valid
       } else {
         return false; // Token is expired
-      }      
-    })
-    const newTokenArray = [...refreshTokens, refreshToken]
+      }
+    });
+    const newTokenArray = [...refreshTokens, refreshToken];
     await this.prisma.user.update({
       where: {
         email: emailId,
       },
-      data: { refreshTokens: newTokenArray }
-    });    
+      data: { refreshTokens: newTokenArray },
+    });
   }
 }
