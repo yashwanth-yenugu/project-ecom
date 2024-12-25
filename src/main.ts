@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import metadata from './metadata';
+import { PrismaService } from './prisma.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -12,6 +13,7 @@ async function bootstrap() {
   });
 
   const configService = app.get(ConfigService);
+  const prismaService = app.get(PrismaService);
 
   app.enableCors();
 
@@ -35,6 +37,12 @@ async function bootstrap() {
   );
 
   const port = configService.get('PORT');
+
+  // Cleanup on application shutdown
+  process.on('SIGINT', async () => {
+    await prismaService.cleanUp();
+    process.exit(0);
+  });
 
   await app.listen(port, '0.0.0.0');
   const logger = new Logger('Bootstrap');

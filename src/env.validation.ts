@@ -39,7 +39,7 @@ export class EnvironmentVariables {
 
   @IsString()
   REFRESH_EXPIRES_IN: string = '60d';
-  
+
   @IsString()
   AWS_REGION: string;
 

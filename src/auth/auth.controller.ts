@@ -44,8 +44,7 @@ export class AuthController {
     return this.authService.cleanupExpiredOTPs();
   }
 
-  
-  @UseGuards(RefreshAuthGuard)  
+  @UseGuards(RefreshAuthGuard)
   @Post('refresh')
   async refresh(@Request() req: Express.Request) {
     return this.authService.refresh(req);

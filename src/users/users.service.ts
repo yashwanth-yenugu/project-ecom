@@ -4,13 +4,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { SignUpDto } from 'src/dto/sign-up.dto';
 import { PrismaService } from 'src/prisma.service';
 import { hashPassword } from 'src/utils/password';
-
-// This should be a real class/interface representing a user entity
-export type User = any;
 
 @Injectable()
 export class UsersService {
